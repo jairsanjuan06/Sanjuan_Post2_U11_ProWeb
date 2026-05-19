@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    logback-spring.xml — Configuración de logging para catalogo-api
+    Spring Boot detecta automáticamente este archivo por su nombre especial.
+    Usar logback-spring.xml (no logback.xml) permite usar <springProfile>.
+
+    Appenders configurados:
+    1. CONSOLA — muestra logs en la terminal con formato compacto (HH:mm:ss)
+    2. ARCHIVO — escribe en logs/catalogo.log con rotación diaria
+                  y retención de 30 días de historial
+-->
+<configuration>
+
+    <!-- ══════════════════════════════════════════════════════════
+         Appender 1: CONSOLA
+         Muestra logs en stdout con timestamp corto para lectura rápida
+         Formato: 10:30:15 INFO  ProductoServiceImpl    - Producto creado con id=1
+    ══════════════════════════════════════════════════════════ -->
+    <appender name="CONSOLA" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} %-5level %logger{30} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════
+         Appender 2: ARCHIVO con rotación diaria
+         - Archivo activo:  logs/catalogo.log
+         - Archivos viejos: logs/catalogo.2026-05-18.log, etc.
+         - Retención:       30 días (luego se eliminan automáticamente)
+         Formato: 2026-05-18 10:30:15 INFO  c.e.c.service.ProductoServiceImpl - ...
+    ══════════════════════════════════════════════════════════ -->
+    <appender name="ARCHIVO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/catalogo.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Patrón de nombre al rotar: un archivo por día -->
+            <fileNamePattern>logs/catalogo.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Máximo 30 archivos históricos antes de eliminar el más antiguo -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ══════════════════════════════════════════════════════════
+         Nivel DEBUG para el paquete de nuestra aplicación.
+         Esto hace que los log.debug() en ProductoServiceImpl
+         sean visibles, mientras el resto del framework sigue en INFO.
+    ══════════════════════════════════════════════════════════ -->
+    <logger name="com.empresa.catalogo" level="DEBUG"/>
+
+    <!-- ══════════════════════════════════════════════════════════
+         Nivel raíz: INFO para todo lo demás (Spring, Hibernate, etc.)
+         Ambos appenders activos simultáneamente.
+    ══════════════════════════════════════════════════════════ -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLA"/>
+        <appender-ref ref="ARCHIVO"/>
+    </root>
+
+</configuration>

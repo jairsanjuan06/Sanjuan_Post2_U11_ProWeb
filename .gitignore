@@ -1,0 +1,19 @@
+# Compilación Maven
+target/
+
+# Archivos de IDE
+.idea/
+*.iml
+.vscode/
+*.class
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs generados en tiempo de ejecución — no deben subirse al repositorio
+# El directorio se crea automáticamente al iniciar la aplicación
+logs/
+
+# Spring Boot devtools
+spring-devtools.properties
