@@ -178,12 +178,5 @@ curl -s http://localhost:8080/api/productos/999 | python3 -m json.tool
 curl -s -X POST http://localhost:8080/api/productos \
   -H "Content-Type: application/json" -d '{}' | python3 -m json.tool
 ```
-## Evidencias
 
-![alt text](Capturas/Mvn-compile.png)
-
-![alt text](Capturas/Postman-201.png)
-
-![alt text](Capturas/Postman-Get.png)
 ---
-
